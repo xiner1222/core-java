@@ -20,7 +20,7 @@ public class ConditionPlant implements IPlant{
     final Condition isEmptyApple;
     final Condition isFull;
     private static  final int MAX = 100;
-    private static  final Queue<Fruit> orangeBuffer = new ArrayBlockingQueue<Fruit>(MAX);
+//    private static  final Queue<Fruit> orangeBuffer = new ArrayBlockingQueue<Fruit>(MAX);
     private static  final Queue<Fruit> appleBuffer = new ArrayBlockingQueue<Fruit>(MAX);
     private static int count = 0;
 
@@ -37,9 +37,14 @@ public class ConditionPlant implements IPlant{
     public <T extends Fruit> void take(T obj) throws InterruptedException {
         lock.lock();
 
-        judgeAndTakeFruit(obj);
+        if(appleBuffer.size()==0){
+            System.out.println("take apple await ");
+            isEmptyApple.await();
+        }
+        appleBuffer.remove();
 
         count--;
+        System.out.println("take a apple!  "+ count );
 
         isFull.signal();
         lock.unlock();
@@ -49,54 +54,21 @@ public class ConditionPlant implements IPlant{
     public <T extends Fruit> void put(T obj) throws InterruptedException {
         lock.lock();
 
-        judgeAndPutFruit(obj);
-
+        if(count==MAX){
+            System.out.println("put apple await ");
+            isFull.await();
+        }
+        appleBuffer.add(obj);
         count++;
-        notifyConsumer(obj);
+        System.out.println("put a apple!  "+ count );
+
+        isEmptyApple.signal();
 
         lock.unlock();
 
     }
 
 
-    private <T extends Fruit>void judgeAndPutFruit(T obj) throws InterruptedException {
-        if (count == MAX-1) {
-            isFull.await();
-        }
-        if (obj.getClass().equals(Orange.class)) {
-            orangeBuffer.add(obj);
-        }else{
-            appleBuffer.add(obj);
-        }
-        System.out.println(" put a "+obj.getName()+ " "+(count+1));
-    }
-
-    private <T extends Fruit> void judgeAndTakeFruit(T obj) throws InterruptedException {
-        if(obj.getClass().equals(Orange.class)){
-            if(orangeBuffer.isEmpty()){
-                isEmptyOrange.await();
-            }else{
-                orangeBuffer.poll();
-            }
-        }else{
-            if(appleBuffer.isEmpty()){
-                isEmptyApple.await();
-
-            }else{
-                orangeBuffer.poll();
-
-            }
-        }
-        System.out.println(" take a  "+obj.getName()+ " " + (count-1));
-    }
-
-    private <T>void notifyConsumer(T obj){
-        if(obj.getClass().equals(Orange.class)){
-            isEmptyOrange.signal();
-        }else{
-            isEmptyApple.signal();
-        }
-    }
 
 
 

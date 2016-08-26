@@ -25,9 +25,9 @@ public class TestDemoMonitor {
         Daughter daughter = new Daughter(plant);
 
         new Thread(father).start();
-        new Thread(mother).start();
+//        new Thread(mother).start();
         new Thread(son).start();
-        new Thread(daughter).start();
+//        new Thread(daughter).start();
 
 
     }
