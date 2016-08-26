@@ -1,6 +1,7 @@
 package code.semaphore.inter.impl;
 
-import code.semaphore.Plant;
+import code.semaphore.SemaphorePlant;
+import code.semaphore.inter.IPlant;
 import code.semaphore.inter.IProducer;
 
 /**
@@ -8,11 +9,11 @@ import code.semaphore.inter.IProducer;
  */
 public class Father implements IProducer {
 
-    private Plant plant;
+    private IPlant semaphorePlant;
 
 
-    public Father(Plant plant) {
-        this.plant = plant;
+    public Father(IPlant semaphorePlant) {
+        this.semaphorePlant = semaphorePlant;
     }
 
     public <T> void product(T source) {
@@ -23,8 +24,7 @@ public class Father implements IProducer {
 
         while(true){
             try {
-                System.out.println("father--->");
-                plant.put(new Apple());
+                semaphorePlant.put(new Apple());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

@@ -2,6 +2,7 @@ package code.semaphore;
 
 import code.semaphore.inter.Fruit;
 import code.semaphore.inter.IConsumer;
+import code.semaphore.inter.IPlant;
 import code.semaphore.inter.IProducer;
 import code.semaphore.inter.impl.Daughter;
 import code.semaphore.inter.impl.Father;
@@ -10,11 +11,12 @@ import code.semaphore.inter.impl.Orange;
 import code.semaphore.inter.impl.Son;
 
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.locks.Condition;
 
 /**
  * Created by vipkid on 16/8/24.
  */
-public class Plant {
+public class SemaphorePlant implements IPlant{
 
     private static final int PLANT_COUNT_EMPTY = 1;
 
@@ -48,5 +50,6 @@ public class Plant {
         }else{
             apple.release();
         }
+
     }
 }

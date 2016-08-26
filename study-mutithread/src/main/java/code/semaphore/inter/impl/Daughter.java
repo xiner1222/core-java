@@ -1,17 +1,18 @@
 package code.semaphore.inter.impl;
 
-import code.semaphore.Plant;
+import code.semaphore.SemaphorePlant;
 import code.semaphore.inter.IConsumer;
+import code.semaphore.inter.IPlant;
 
 /**
  * Created by vipkid on 16/8/24.
  */
 public class Daughter implements IConsumer {
-    private Plant plant;
+    private IPlant semaphorePlant;
 
 
-    public Daughter(Plant plant) {
-        this.plant = plant;
+    public Daughter(IPlant semaphorePlant) {
+        this.semaphorePlant = semaphorePlant;
     }
 
     public <T> void conosume(T source) {
@@ -21,9 +22,8 @@ public class Daughter implements IConsumer {
     public void run() {
 
         while(true){
-            System.out.println("daughter--->");
             try {
-                plant.take(new Orange());
+                semaphorePlant.take(new Orange());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
