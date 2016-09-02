@@ -20,14 +20,11 @@ public class TestDemoMonitor {
         ConditionPlant plant  = new ConditionPlant(lock);
 
         Father father = new Father(plant);
-        Mother mother = new Mother(plant);
         Son son = new Son(plant);
-        Daughter daughter = new Daughter(plant);
 
         new Thread(father).start();
-//        new Thread(mother).start();
+//        new Thread(father).start();
         new Thread(son).start();
-//        new Thread(daughter).start();
 
 
     }
